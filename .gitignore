@@ -1,0 +1,8 @@
+plan*
+terraform.tfstate
+terraform.tfstate.backup
+secrets.tf
+.sectrets.tf
+credentials.tf
+.credentials.tf
+.terraform
