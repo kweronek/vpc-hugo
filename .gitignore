@@ -6,3 +6,4 @@ secrets.tf
 credentials.tf
 .credentials.tf
 .terraform
+password-store
