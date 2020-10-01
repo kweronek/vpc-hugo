@@ -1,12 +1,18 @@
-cat ../secrets_tmpl.tf > vpc-hugo-all.tf
-cat ../provider_aws.tf >> vpc-hugo-all.tf
-cat ../variables.tf >> vpc-hugo-all.tf
-cat ../locals.tf >> vpc-hugo-all.tf
-cat ../network.tf >> vpc-hugo-all.tf
-cat ../gateways.tf >> vpc-hugo-all.tf
-cat ../subnets.tf >> vpc-hugo-all.tf
-cat ../security_groups.tf >> vpc-hugo-all.tf
-cat ../servers.tf >> vpc-hugo-all.tf
-cat ../eip.tf >> vpc-hugo-all.tf
+cat ../secrets_tmpl.tf > ../vpc-hugo-all.tf.txt
+cat ../provider_aws.tf >> ../vpc-hugo-all.tf.txt
+cat ../variables.tf >> ../vpc-hugo-all.tf.txt
+cat ../locals.tf >> ../vpc-hugo-all.tf.txt
+cat ../network.tf >> ../vpc-hugo-all.tf.txt
+cat ../gateways.tf >> ../vpc-hugo-all.tf.txt
+cat ../subnets.tf >> ../vpc-hugo-all.tf.txt
+cat ../security_groups.tf >> ../vpc-hugo-all.tf.txt
+cat ../servers.tf >> ../vpc-hugo-all.tf.txt
+cat ../eip.tf >> ../vpc-hugo-all.tf.txt
 clear
-cat vpc-hugo-all.tf
+cat ../vpc-hugo-all.tf.txt
+#
+terraform init
+cp ../*.tfstate .
+terraform show  > ../terrashow.txt
+terraform graph| dot -Tsvg > ../terragraph.svg
+rm -f *.tfstate
