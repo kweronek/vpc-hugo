@@ -1,0 +1,219 @@
+# This file is a template file
+# please replace placeholders by valid keys/key par name respectively
+# thereafter please remove the subsequent comment signs /* and */
+/*
+variable "access_key" {
+  default = "ASDFTGSSGSAFG4FGSFDSS"
+}
+
+variable "secret_key" {
+  default = "ASDfasdFAsda*AfafdfddadfasddEbJZSEDSf$"
+}
+
+variable "ami_key_pair_name" {
+  default = "Terraform-kp"
+}
+*/
+//
+// provider.tf
+//
+provider "aws" {
+  access_key = var.access_key
+  secret_key = var.secret_key
+  region = var.aws_region
+}
+//
+// variables.tf
+//
+variable "aws_region" { default = "us-east-1" } # North Virginia
+#  default = "us-east-2" # Ohio
+
+variable "env" { default = "kwer-test" }
+variable "vpc_name" { default = "cloud0" }
+
+# variable "gw_name" { default = "var.env-gw" }
+
+variable "ami_name" { default = "Amazon Linux 2" }
+#  default = "Ubuntu 20.04 LTS"
+#  default = "Ubuntu 18.04 LTS"
+#  default = "openSUSE 15.2"
+#  default = "SLES 15.2"
+#  default = "K3OS-v0.11.0 KW"
+
+variable "instance_type" {default = "t2.micro" }
+#  default = "m1.medium"
+
+
+variable "ami_id" {default = "ami-0947d2ba12ee1ff75" }   # Amazon linux AMI 2
+#  default = "ami-0dba2cb6798deb6d8"    # Ubuntu 20.04 LTS
+#  default = "ami-0817d428a6fb68645"    # Ubuntu 18,04 LTS
+#  default = "ami-0dc3ca5b357a165492    # openSUSE 15.2
+#  default = "ami-0a782e324655d1cc0"    # SLES 15.2
+#  default = "ami-0a1cfbada2409e7dc"    # K3OS-v0.11.0 KW
+
+//
+// locals.tf
+//
+#locals {
+#   env_name = "kwer-test"
+#}	
+
+// **********
+// network.tf
+// **********
+resource "aws_vpc" "this" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support = true
+  
+  tags = {
+    Name = var.vpc_name
+    Environment = var.env
+  }
+}
+// ***********
+// gateways.tf
+// ***********
+//
+resource "aws_internet_gateway" "this" {
+  vpc_id = aws_vpc.this.id
+  
+  tags = {
+    Name = "igw"
+    Environment = var.env
+  }
+}
+//
+//
+resource "aws_nat_gateway" "this" {
+  allocation_id = aws_eip.eip1.id
+  subnet_id = aws_subnet.public1.id
+
+  tags = {
+    Name = "ngw"
+    Environment = var.env
+  }
+}
+// **********
+// subnets.tf
+// **********
+resource "aws_subnet" "public1" {
+  cidr_block = "10.0.1.0/24"
+#  cidr_block = cidrsubnet(aws_vpc.this.cidr_block, 3, 1)
+  vpc_id = aws_vpc.this.id
+  availability_zone = "us-east-1a"
+
+  tags = { 
+    Name = "public1"
+    Environment = var.env
+  }
+}
+
+resource "aws_route_table" "igw" {
+  vpc_id = aws_vpc.this.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.this.id
+  }
+
+  tags = { 
+    Name = "igw" 
+    Environments = var.env
+  }
+}
+
+resource "aws_route_table_association" "public1-igw" {
+  subnet_id      = aws_subnet.public1.id
+  route_table_id = aws_route_table.igw.id
+}
+
+//
+// *******************************
+resource "aws_subnet" "private2" {
+#  cidr_block = cidrsubnet(aws_vpc.this.cidr_block, 3, 1)
+  cidr_block = "10.0.2.0/24"
+  vpc_id = aws_vpc.this.id
+  availability_zone = "us-east-1a"
+
+  tags = { 
+    Name = "subnet-private2"
+    Environment = var.env
+  }
+}
+// ******************
+// security_groups.tf
+// ******************
+resource "aws_security_group" "ssh_all" {
+  name = "ssh-all"
+
+  vpc_id = aws_vpc.this.id
+  
+  // opens SSH from all IPs
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+  }
+  
+  // Terraform removes the default rule
+  // allow any:any out
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ssh-all"
+  }
+}
+// **********
+// servers.tf
+// **********
+resource "aws_instance" "general-purpose" {
+
+#  count=2
+
+  ami = var.ami_id
+  instance_type = var.instance_type
+  key_name = var.ami_key_pair_name
+  vpc_security_group_ids = [aws_security_group.ssh_all.id]
+  
+  tags = {
+#    Name = "${var.env}-inst-${count.index}"
+     Name = "${var.env}-inst-1"
+    AMI = var.ami_name
+  }
+  
+  subnet_id = aws_subnet.public1.id
+}
+
+resource "aws_instance" "private-instance" {
+  ami = var.ami_id
+  instance_type = var.instance_type
+  key_name = var.ami_key_pair_name
+  vpc_security_group_ids = [aws_security_group.ssh_all.id]
+
+  tags = {
+    Name = "${var.env}-inst-2"
+    AMI  = var.ami_name  
+  }
+
+  subnet_id = aws_subnet.private2.id
+}
+// ******
+// eip.tf
+// ******
+resource "aws_eip" "eip1" {
+#  instance = aws_instance.hugo-ec2-instance.id
+  vpc      = true
+  
+  tags = { 
+    Name = "public-ip1"
+    Environment = var.env
+  }
+}
