@@ -1,7 +1,7 @@
 //
 // locals.tf
 //
-locals {
-   env_name = "hugo-env"
-}	
+#locals {
+#   env_name = "kwer-test"
+#}	
 

@@ -1,14 +1,14 @@
+// ******************
 // security_groups.tf
+// ******************
+resource "aws_security_group" "ssh_all" {
+  name = "ssh-all"
 
-resource "aws_security_group" "ingress-all-hugo" {
-  name = "allow-all-sg"
-
-  vpc_id = aws_vpc.hugo-env.id
+  vpc_id = aws_vpc.this.id
   
+  // opens SSH from all IPs
   ingress {
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
+    cidr_blocks = ["0.0.0.0/0"]
     
     from_port = 22
     to_port = 22
@@ -16,10 +16,16 @@ resource "aws_security_group" "ingress-all-hugo" {
   }
   
   // Terraform removes the default rule
+  // allow any:any out
   egress {
     from_port = 0
     to_port = 0
     protocol = "-1"
+
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ssh-all"
   }
 }
