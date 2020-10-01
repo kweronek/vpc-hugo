@@ -1,0 +1,12 @@
+cat ../secrets_tmpl.tf > vpc-hugo-all.tf
+cat ../provider_aws.tf >> vpc-hugo-all.tf
+cat ../variables.tf >> vpc-hugo-all.tf
+cat ../locals.tf >> vpc-hugo-all.tf
+cat ../network.tf >> vpc-hugo-all.tf
+cat ../gateways.tf >> vpc-hugo-all.tf
+cat ../subnets.tf >> vpc-hugo-all.tf
+cat ../security_groups.tf >> vpc-hugo-all.tf
+cat ../servers.tf >> vpc-hugo-all.tf
+cat ../eip.tf >> vpc-hugo-all.tf
+clear
+cat vpc-hugo-all.tf

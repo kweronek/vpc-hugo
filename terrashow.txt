@@ -1,0 +1,280 @@
+[0m# aws_eip.kwer-test-gw:
+resource "aws_eip" "kwer-test-gw" {
+    [1m[0mdomain[0m[0m           = "vpc"
+    [1m[0mid[0m[0m               = "eipalloc-089345bcd40a81213"
+    [1m[0mpublic_dns[0m[0m       = "ec2-18-213-88-236.compute-1.amazonaws.com"
+    [1m[0mpublic_ip[0m[0m        = "18.213.88.236"
+    [1m[0mpublic_ipv4_pool[0m[0m = "amazon"
+    [1m[0mtags[0m[0m             = {
+        "Name" = "kwer-test-gw"
+    }
+    [1m[0mvpc[0m[0m              = true
+}
+
+# aws_instance.general-purpose:
+resource "aws_instance" "general-purpose" {
+    [1m[0mami[0m[0m                          = "ami-0947d2ba12ee1ff75"
+    [1m[0marn[0m[0m                          = "arn:aws:ec2:us-east-1:312334382494:instance/i-089aabfb41d3300a1"
+    [1m[0massociate_public_ip_address[0m[0m  = false
+    [1m[0mavailability_zone[0m[0m            = "us-east-1a"
+    [1m[0mcpu_core_count[0m[0m               = 1
+    [1m[0mcpu_threads_per_core[0m[0m         = 1
+    [1m[0mdisable_api_termination[0m[0m      = false
+    [1m[0mebs_optimized[0m[0m                = false
+    [1m[0mget_password_data[0m[0m            = false
+    [1m[0mhibernation[0m[0m                  = false
+    [1m[0mid[0m[0m                           = "i-089aabfb41d3300a1"
+    [1m[0minstance_state[0m[0m               = "running"
+    [1m[0minstance_type[0m[0m                = "t2.micro"
+    [1m[0mipv6_address_count[0m[0m           = 0
+    [1m[0mipv6_addresses[0m[0m               = []
+    [1m[0mkey_name[0m[0m                     = "Terraform-kp"
+    [1m[0mmonitoring[0m[0m                   = false
+    [1m[0mprimary_network_interface_id[0m[0m = "eni-02bfc5d0c7295ae98"
+    [1m[0mprivate_dns[0m[0m                  = "ip-10-0-1-45.ec2.internal"
+    [1m[0mprivate_ip[0m[0m                   = "10.0.1.45"
+    [1m[0msecondary_private_ips[0m[0m        = []
+    [1m[0msecurity_groups[0m[0m              = []
+    [1m[0msource_dest_check[0m[0m            = true
+    [1m[0msubnet_id[0m[0m                    = "subnet-0493d6106b5ef6725"
+    [1m[0mtags[0m[0m                         = {
+        "AMI"  = "Amazon Linux 2"
+        "Name" = "kwer-test-inst-1"
+    }
+    [1m[0mtenancy[0m[0m                      = "default"
+    [1m[0mvolume_tags[0m[0m                  = {}
+    [1m[0mvpc_security_group_ids[0m[0m       = [
+        "sg-0d399b538c47a39a8",
+    ]
+
+    credit_specification {
+        [1m[0mcpu_credits[0m[0m = "standard"
+    }
+
+    metadata_options {
+        [1m[0mhttp_endpoint[0m[0m               = "enabled"
+        [1m[0mhttp_put_response_hop_limit[0m[0m = 1
+        [1m[0mhttp_tokens[0m[0m                 = "optional"
+    }
+
+    root_block_device {
+        [1m[0mdelete_on_termination[0m[0m = true
+        [1m[0mdevice_name[0m[0m           = "/dev/xvda"
+        [1m[0mencrypted[0m[0m             = false
+        [1m[0miops[0m[0m                  = 100
+        [1m[0mvolume_id[0m[0m             = "vol-01169cce2d2b6724c"
+        [1m[0mvolume_size[0m[0m           = 8
+        [1m[0mvolume_type[0m[0m           = "gp2"
+    }
+}
+
+# aws_instance.private-instance:
+resource "aws_instance" "private-instance" {
+    [1m[0mami[0m[0m                          = "ami-0947d2ba12ee1ff75"
+    [1m[0marn[0m[0m                          = "arn:aws:ec2:us-east-1:312334382494:instance/i-055d386cd92f62fdb"
+    [1m[0massociate_public_ip_address[0m[0m  = false
+    [1m[0mavailability_zone[0m[0m            = "us-east-1a"
+    [1m[0mcpu_core_count[0m[0m               = 1
+    [1m[0mcpu_threads_per_core[0m[0m         = 1
+    [1m[0mdisable_api_termination[0m[0m      = false
+    [1m[0mebs_optimized[0m[0m                = false
+    [1m[0mget_password_data[0m[0m            = false
+    [1m[0mhibernation[0m[0m                  = false
+    [1m[0mid[0m[0m                           = "i-055d386cd92f62fdb"
+    [1m[0minstance_state[0m[0m               = "running"
+    [1m[0minstance_type[0m[0m                = "t2.micro"
+    [1m[0mipv6_address_count[0m[0m           = 0
+    [1m[0mipv6_addresses[0m[0m               = []
+    [1m[0mkey_name[0m[0m                     = "Terraform-kp"
+    [1m[0mmonitoring[0m[0m                   = false
+    [1m[0mprimary_network_interface_id[0m[0m = "eni-0d8ef0afad8d56812"
+    [1m[0mprivate_dns[0m[0m                  = "ip-10-0-2-71.ec2.internal"
+    [1m[0mprivate_ip[0m[0m                   = "10.0.2.71"
+    [1m[0msecondary_private_ips[0m[0m        = []
+    [1m[0msecurity_groups[0m[0m              = []
+    [1m[0msource_dest_check[0m[0m            = true
+    [1m[0msubnet_id[0m[0m                    = "subnet-06f567c3586d62ef2"
+    [1m[0mtags[0m[0m                         = {
+        "AMI"  = "Amazon Linux 2"
+        "Name" = "kwer-test-inst-2"
+    }
+    [1m[0mtenancy[0m[0m                      = "default"
+    [1m[0mvolume_tags[0m[0m                  = {}
+    [1m[0mvpc_security_group_ids[0m[0m       = [
+        "sg-0d399b538c47a39a8",
+    ]
+
+    credit_specification {
+        [1m[0mcpu_credits[0m[0m = "standard"
+    }
+
+    metadata_options {
+        [1m[0mhttp_endpoint[0m[0m               = "enabled"
+        [1m[0mhttp_put_response_hop_limit[0m[0m = 1
+        [1m[0mhttp_tokens[0m[0m                 = "optional"
+    }
+
+    root_block_device {
+        [1m[0mdelete_on_termination[0m[0m = true
+        [1m[0mdevice_name[0m[0m           = "/dev/xvda"
+        [1m[0mencrypted[0m[0m             = false
+        [1m[0miops[0m[0m                  = 100
+        [1m[0mvolume_id[0m[0m             = "vol-0085320915fcec93e"
+        [1m[0mvolume_size[0m[0m           = 8
+        [1m[0mvolume_type[0m[0m           = "gp2"
+    }
+}
+
+# aws_internet_gateway.kwer-test-igw:
+resource "aws_internet_gateway" "kwer-test-igw" {
+    [1m[0marn[0m[0m      = "arn:aws:ec2:us-east-1:312334382494:internet-gateway/igw-0748d54090c6120a9"
+    [1m[0mid[0m[0m       = "igw-0748d54090c6120a9"
+    [1m[0mowner_id[0m[0m = "312334382494"
+    [1m[0mtags[0m[0m     = {
+        "Name" = "kwer-test-igw"
+    }
+    [1m[0mvpc_id[0m[0m   = "vpc-0304c15a215556c09"
+}
+
+# aws_nat_gateway.kwer-test-ngw:
+resource "aws_nat_gateway" "kwer-test-ngw" {
+    [1m[0mallocation_id[0m[0m        = "eipalloc-089345bcd40a81213"
+    [1m[0mid[0m[0m                   = "nat-02aa57fe1489576e6"
+    [1m[0mnetwork_interface_id[0m[0m = "eni-012446255ac16fde9"
+    [1m[0mprivate_ip[0m[0m           = "10.0.1.81"
+    [1m[0mpublic_ip[0m[0m            = "18.213.88.236"
+    [1m[0msubnet_id[0m[0m            = "subnet-0493d6106b5ef6725"
+    [1m[0mtags[0m[0m                 = {
+        "Name" = "kwer-test-ngw"
+    }
+}
+
+# aws_route_table.route-table-kwer-test:
+resource "aws_route_table" "route-table-kwer-test" {
+    [1m[0mid[0m[0m               = "rtb-0c190d2f303a281fd"
+    [1m[0mowner_id[0m[0m         = "312334382494"
+    [1m[0mpropagating_vgws[0m[0m = []
+    [1m[0mroute[0m[0m            = [
+        {
+            cidr_block                = "0.0.0.0/0"
+            egress_only_gateway_id    = ""
+            gateway_id                = "igw-0748d54090c6120a9"
+            instance_id               = ""
+            ipv6_cidr_block           = ""
+            local_gateway_id          = ""
+            nat_gateway_id            = ""
+            network_interface_id      = ""
+            transit_gateway_id        = ""
+            vpc_peering_connection_id = ""
+        },
+    ]
+    [1m[0mtags[0m[0m             = {
+        "Name" = "route-table-kwer-test-uno"
+    }
+    [1m[0mvpc_id[0m[0m           = "vpc-0304c15a215556c09"
+}
+
+# aws_route_table_association.subnet-association-uno:
+resource "aws_route_table_association" "subnet-association-uno" {
+    [1m[0mid[0m[0m             = "rtbassoc-05a7004ae9bdd70fd"
+    [1m[0mroute_table_id[0m[0m = "rtb-0c190d2f303a281fd"
+    [1m[0msubnet_id[0m[0m      = "subnet-0493d6106b5ef6725"
+}
+
+# aws_security_group.sg_ssh_all:
+resource "aws_security_group" "sg_ssh_all" {
+    [1m[0marn[0m[0m                    = "arn:aws:ec2:us-east-1:312334382494:security-group/sg-0d399b538c47a39a8"
+    [1m[0mdescription[0m[0m            = "Managed by Terraform"
+    [1m[0megress[0m[0m                 = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = ""
+            from_port        = 0
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "-1"
+            security_groups  = []
+            self             = false
+            to_port          = 0
+        },
+    ]
+    [1m[0mid[0m[0m                     = "sg-0d399b538c47a39a8"
+    [1m[0mingress[0m[0m                = [
+        {
+            cidr_blocks      = [
+                "0.0.0.0/0",
+            ]
+            description      = ""
+            from_port        = 22
+            ipv6_cidr_blocks = []
+            prefix_list_ids  = []
+            protocol         = "tcp"
+            security_groups  = []
+            self             = false
+            to_port          = 22
+        },
+    ]
+    [1m[0mname[0m[0m                   = "allow-ssh-all-sg"
+    [1m[0mowner_id[0m[0m               = "312334382494"
+    [1m[0mrevoke_rules_on_delete[0m[0m = false
+    [1m[0mtags[0m[0m                   = {
+        "Name" = "kwer-test-sg"
+    }
+    [1m[0mvpc_id[0m[0m                 = "vpc-0304c15a215556c09"
+}
+
+# aws_subnet.subnet-due:
+resource "aws_subnet" "subnet-due" {
+    [1m[0marn[0m[0m                             = "arn:aws:ec2:us-east-1:312334382494:subnet/subnet-06f567c3586d62ef2"
+    [1m[0massign_ipv6_address_on_creation[0m[0m = false
+    [1m[0mavailability_zone[0m[0m               = "us-east-1a"
+    [1m[0mavailability_zone_id[0m[0m            = "use1-az4"
+    [1m[0mcidr_block[0m[0m                      = "10.0.2.0/24"
+    [1m[0mid[0m[0m                              = "subnet-06f567c3586d62ef2"
+    [1m[0mmap_public_ip_on_launch[0m[0m         = false
+    [1m[0mowner_id[0m[0m                        = "312334382494"
+    [1m[0mtags[0m[0m                            = {
+        "Name" = "subnet-private"
+    }
+    [1m[0mvpc_id[0m[0m                          = "vpc-0304c15a215556c09"
+}
+
+# aws_subnet.subnet-uno:
+resource "aws_subnet" "subnet-uno" {
+    [1m[0marn[0m[0m                             = "arn:aws:ec2:us-east-1:312334382494:subnet/subnet-0493d6106b5ef6725"
+    [1m[0massign_ipv6_address_on_creation[0m[0m = false
+    [1m[0mavailability_zone[0m[0m               = "us-east-1a"
+    [1m[0mavailability_zone_id[0m[0m            = "use1-az4"
+    [1m[0mcidr_block[0m[0m                      = "10.0.1.0/24"
+    [1m[0mid[0m[0m                              = "subnet-0493d6106b5ef6725"
+    [1m[0mmap_public_ip_on_launch[0m[0m         = false
+    [1m[0mowner_id[0m[0m                        = "312334382494"
+    [1m[0mtags[0m[0m                            = {
+        "Name" = "subnet-public"
+    }
+    [1m[0mvpc_id[0m[0m                          = "vpc-0304c15a215556c09"
+}
+
+# aws_vpc.kwer-test:
+resource "aws_vpc" "kwer-test" {
+    [1m[0marn[0m[0m                              = "arn:aws:ec2:us-east-1:312334382494:vpc/vpc-0304c15a215556c09"
+    [1m[0massign_generated_ipv6_cidr_block[0m[0m = false
+    [1m[0mcidr_block[0m[0m                       = "10.0.0.0/16"
+    [1m[0mdefault_network_acl_id[0m[0m           = "acl-095a0d8c33a11dc60"
+    [1m[0mdefault_route_table_id[0m[0m           = "rtb-0b6e5005f4de447e6"
+    [1m[0mdefault_security_group_id[0m[0m        = "sg-0866490305bd30944"
+    [1m[0mdhcp_options_id[0m[0m                  = "dopt-e461429c"
+    [1m[0menable_classiclink[0m[0m               = false
+    [1m[0menable_classiclink_dns_support[0m[0m   = false
+    [1m[0menable_dns_hostnames[0m[0m             = true
+    [1m[0menable_dns_support[0m[0m               = true
+    [1m[0mid[0m[0m                               = "vpc-0304c15a215556c09"
+    [1m[0minstance_tenancy[0m[0m                 = "default"
+    [1m[0mmain_route_table_id[0m[0m              = "rtb-0b6e5005f4de447e6"
+    [1m[0mowner_id[0m[0m                         = "312334382494"
+    [1m[0mtags[0m[0m                             = {
+        "Name" = "vpc-kwer-test"
+    }
+}[0m[0m
