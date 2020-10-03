@@ -1,6 +1,7 @@
-// **********
-// servers.tf
-// **********
+#--------------#
+#  servers.tf  #
+#--------------#
+
 # resource "aws_instance" "public1" {
 resource "aws_spot_instance_request" "public1" {
 #  count=1
@@ -8,7 +9,7 @@ resource "aws_spot_instance_request" "public1" {
   wait_for_fulfillment = true
   spot_type = "one-time"  
   ami = var.ami_id
-  instance_type = var.instance_type
+  instance_type = var.inst_type_default
   spot_price = "0.01"
   key_name = var.ami_key_pair_name
   vpc_security_group_ids = [aws_security_group.ssh_all.id]
@@ -18,7 +19,7 @@ resource "aws_spot_instance_request" "public1" {
 #    Name = "${var.env}-inst-${count.index}"
     Name = "${var.env}-inst-1"
     AMI = var.ami_name
-    Instance_type = "spot" 
+    Inst_purch-opt = "spot" 
   }
   subnet_id = aws_subnet.public1.id
 
@@ -28,9 +29,11 @@ resource "aws_spot_instance_request" "public1" {
 }
 
 locals { tags = {
-    Name = "public1-srv-1-spot"
+    Name = "public1-srv-1"
     AMI = var.ami_name
-    Environment = var.env
+    Stage = "archdev"
+    Environment = "prod"
+    Inst_purch_opt = "spot"
 }   }
 
 resource "aws_ec2_tag" "public1" {  
@@ -39,7 +42,7 @@ resource "aws_ec2_tag" "public1" {
   key      = each.key
   value    = each.value
 }
-######################################
+#-------------------------------------
 # resource "aws_instance" "private2" {
 resource "aws_spot_instance_request" "private2" {
 #  count = 1
@@ -54,9 +57,11 @@ resource "aws_spot_instance_request" "private2" {
   root_block_device { volume_size = "8" }
 
   tags = {
-    Name = "var.env-inst-2-spot"
+    Name = "private2-srv-spot"
     AMI  = var.ami_name  
-    Instance_type = "on demand"
+    Stage = "archdev"
+    Environment = "prod"
+    Inst_purch_opt = "spot"
   }
 
   provisioner "local-exec" {
@@ -66,9 +71,11 @@ resource "aws_spot_instance_request" "private2" {
 }
 
 locals { tags2 = {
-    Name = "private2-srv-1-spot"
+    Name = "private2-srv-1"
     AMI = var.ami_name
-    Environment = var.env
+    Stage = "archdev"
+    Environment = "prod"
+    Inst_purch_opt = "spot"
 }   }
 
 resource "aws_ec2_tag" "private2" {
@@ -105,13 +112,15 @@ resource "aws_spot_instance_request" "data3" {
 }
 
 locals { tags3 = {
-    Name = "data3-srv-1-spot"
+    Name = "data3-srv-1"
     AMI = var.ami_name
-    Environment = var.env
+    Stage = "archdev"
+    Environment = "prod"
+    Inst_purch_opt = "spot"
 }   }
 
 resource "aws_ec2_tag" "data3" {
-  resource_id = aws_spot_instance_request.private2.spot_instance_id
+  resource_id = aws_spot_instance_request.data3.spot_instance_id
   for_each = local.tags3
   key      = each.key
   value    = each.value

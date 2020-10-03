@@ -1,15 +1,16 @@
-<<<<<<< HEAD
-// ***********
-// gateways.tf
-// ***********
-//
+#---------------#
+#  gateways.tf  #
+#---------------#
+
+#--------------------------------------
 resource "aws_internet_gateway" "igw1" {
   depends_on = [aws_vpc.cloud0]
   vpc_id = aws_vpc.cloud0.id
   
   tags = {
     Name = "igw1"
-    Environment = var.env
+    Region = var.aws_region
+    Environment = "prod"
   }
 }
 
@@ -17,7 +18,7 @@ resource "null_resource" "igw1_dependency" {
   depends_on = [aws_internet_gateway.igw1]
 }
 
-//
+#----------------------------------
 resource "aws_nat_gateway" "ngw1" {
   depends_on = [aws_vpc.cloud0]
 #  depends_on = [aws_eip.eip1]
@@ -26,7 +27,9 @@ resource "aws_nat_gateway" "ngw1" {
 
   tags = {
     Name = "ngw1"
-    Environment = var.env
+    Subnet = "public1"
+    Stage = "archdev"
+    Environment = "prod"
   }
 }
 

@@ -1,14 +1,15 @@
-//
-// variables.tf
-//
+#----------------#
+#  variables.tf  #
+#----------------#
+
 variable "aws_region" { 
    default = "us-east-1" # North Virginia
 #  default = "us-east-2" # Ohio
 }
 
 variable "vpc_name" { default = "cloud0" }
+variable "stage" { default = "archdev" }
 variable "env" { default = "dev" }
-
 
 variable "ami_name" { 
    default = "Amazon Linux 2"
@@ -24,6 +25,8 @@ variable "instance_type" {
 #  default = "m1.medium"
 }
 
+
+
 variable "ami_id" {
    default = "ami-0947d2ba12ee1ff75"    # Amazon linux AMI 2
 #  default = "ami-0dba2cb6798deb6d8"    # Ubuntu 20.04 LTS
@@ -31,4 +34,9 @@ variable "ami_id" {
 #  default = "ami-0dc3ca5b357a16549"    # openSUSE 15.2
 #  default = "ami-0a782e324655d1cc0"    # SLES 15.2
 #  default = "ami-0a1cfbada2409e7dc"    # K3OS-v0.11.0 KW
+}
+
+variable "inst_type_default" {
+   default = "t2.micro"
+#  default = "m1.medium"
 }

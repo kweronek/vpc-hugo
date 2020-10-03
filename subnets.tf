@@ -7,11 +7,12 @@ resource "aws_subnet" "public1" {
   depends_on = [aws_vpc.cloud0]
   cidr_block        = "10.0.1.0/24"
   vpc_id            = aws_vpc.cloud0.id
-  availability_zone = "us-east-1a"
+  availability_zone = "${var.aws_region}a"
 
   tags = { 
     Name        = "${var.vpc_name}-public1"
-    Environment = var.env
+    Stage       = var.stage
+    Environment = "prod"
   }
 }
 
@@ -26,8 +27,10 @@ resource "aws_route_table" "igw1" {
   }
 
   tags = { 
-    Name         = "${var.vpc_name}-igw1" 
-    Environments = var.env
+    Name         = "${var.vpc_name}-igw1"
+    Stage        = var.stage
+    Subnet       = "public1"
+    Environments = "prod"
   }
 }
 
@@ -46,8 +49,10 @@ resource "aws_subnet" "private2" {
   availability_zone = "us-east-1a"
 
   tags = { 
-    Name        = "private2"
-    Environment = var.env
+    Name        = "${var.vpc_name}-private2"
+    Stage       = var.stage
+    Subnet      = "private2"
+    Environment = "prod"
   }
 }
 #
@@ -63,7 +68,8 @@ resource "aws_route_table" "ngw1_2" {
 
   tags = {
     Name         = "${var.vpc_name}-ngw1_2"
-    Environments = var.env
+    Stage        = var.stage
+    Environments = "prod"
   }
 }
 #
@@ -72,7 +78,7 @@ resource "aws_route_table_association" "private2-ngw1_2" {
   route_table_id = aws_route_table.ngw1_2.id
 }
 
-#******************************
+#------------------------------
 resource "aws_subnet" "data3" {
   depends_on = [aws_vpc.cloud0]
   cidr_block        = "10.0.3.0/24"
@@ -80,8 +86,9 @@ resource "aws_subnet" "data3" {
   availability_zone = "us-east-1a"
 
   tags = {
-    Name        = "data3"
-    Environment = var.env
+    Name        = "${var.vpc_name}-data3"
+    Stage       = var.stage
+    Environment = "prod"
   }
 }
 #
@@ -97,7 +104,8 @@ resource "aws_route_table" "ngw1_3" {
 
   tags = {
     Name         = "${var.vpc_name}-ngw1_3"
-    Environments = var.env
+    Stage        = var.stage
+    Environments = "prod"
   }
 }
 #
