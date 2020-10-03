@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ***********
 // gateways.tf
 // ***********
@@ -15,8 +16,6 @@ resource "aws_internet_gateway" "igw1" {
 resource "null_resource" "igw1_dependency" {
   depends_on = [aws_internet_gateway.igw1]
 }
-
-
 
 //
 resource "aws_nat_gateway" "ngw1" {
